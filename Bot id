@@ -1,0 +1,33 @@
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+
+# Your bot token
+TOKEN = '6880909457:AAGIMSvHx7GZzwuf-gvVEhYgzIvpdn4Sy78'
+
+def start(update: Update, context: CallbackContext):
+    update.message.reply_text("Welcome to the Music Streaming Bot! Use /play <song_name> to start streaming.")
+
+def play(update: Update, context: CallbackContext):
+    song_name = ' '.join(context.args)
+    if not song_name:
+        update.message.reply_text("Please specify a song name.")
+        return
+    
+    # Here you should implement your logic to fetch the song URL
+    # For this example, we will use a placeholder URL
+    song_url = f"https://example.com/path/to/{song_name}.mp3"  # Replace with actual song URL
+    
+    update.message.reply_audio(audio=song_url)
+
+def main():
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("play", play))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
